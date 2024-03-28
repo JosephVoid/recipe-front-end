@@ -6,13 +6,13 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import PersonIcon from "@mui/icons-material/Person";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
+import { useLocation } from "wouter";
 import Button from "@mui/material/Button";
 import logo from "../assets/recipe.png";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 
-const pages = ["Receipes", "Shopping"];
+const pages = ["Recipes", "Shopping"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function NavBar() {
@@ -25,6 +25,7 @@ function NavBar() {
   };
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [location, setLocation] = useLocation();
   const isMenuOpen = Boolean(anchorEl);
   const menuId = "primary-search-account-menu";
   const renderMenu = (
@@ -43,13 +44,14 @@ function NavBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Sign In</MenuItem>
+      <MenuItem onClick={() => setLocation(`/signin`)}>Log In</MenuItem>
+      <MenuItem onClick={() => setLocation(`/signup`)}>Sign Up</MenuItem>
       <MenuItem onClick={handleMenuClose}>Sign Out</MenuItem>
     </Menu>
   );
 
   const handleMenuClick = (route: string) => {
-    console.log(route);
+    setLocation(`/${route}`);
   };
 
   return (

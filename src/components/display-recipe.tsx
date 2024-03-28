@@ -37,8 +37,8 @@ export default function DisplayRecipe({ data }: { data: Recipe }) {
         </Button>
       </Typography>
       <hr className="mb-2" />
-      {data.ingr.map((ingrids) => (
-        <Typography>
+      {data.ingr.map((ingrids, idx) => (
+        <Typography key={idx}>
           {ingrids.name}..............................{ingrids.quantity}{" "}
           {ingrids.unit}
         </Typography>

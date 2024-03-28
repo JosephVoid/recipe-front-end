@@ -5,6 +5,7 @@ import CreateRecipes from "./create-recipes";
 import Shopping from "./shopping";
 import EditRecipes from "./edit-recipes";
 import SignUp from "./signup";
+import SignIn from "./signin";
 
 export default function Dashboard() {
   return (
@@ -19,6 +20,7 @@ export default function Dashboard() {
         </Route>
         <Route path="/shopping" component={Shopping} />
         <Route path="/signup" component={SignUp} />
+        <Route path="/signin" component={SignIn} />
         <Route>404: No such page</Route>
       </Switch>
     </div>

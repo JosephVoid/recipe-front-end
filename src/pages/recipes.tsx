@@ -2,7 +2,11 @@ import { Button, Typography } from "@mui/material";
 import RecipeCard from "../components/recipe-card";
 import { Recipe } from "../types";
 import DisplayRecipe from "../components/display-recipe";
+import { useLocation } from "wouter";
+
 export default function Recipes() {
+  const [location, setLocation] = useLocation();
+
   const dummy: Recipe[] = [
     {
       id: "s",
@@ -32,14 +36,19 @@ export default function Recipes() {
   return (
     <div className="p-10 flex">
       <div className="flex flex-col w-1/3">
-        <Button variant="contained" size="small" className="w-2/3 !mb-4">
+        <Button
+          variant="contained"
+          size="small"
+          className="w-2/3 !mb-4"
+          onClick={() => setLocation(`/create-recipes`)}
+        >
           New Recipe
         </Button>
         <Typography variant="h5" gutterBottom>
           Recipe List
         </Typography>
-        {dummy.map((rcp) => (
-          <RecipeCard data={rcp} />
+        {dummy.map((rcp, idx) => (
+          <RecipeCard data={rcp} key={idx} />
         ))}
       </div>
       <div className="flex flex-col w-2/3">
