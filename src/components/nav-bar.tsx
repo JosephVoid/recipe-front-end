@@ -16,12 +16,6 @@ const pages = ["Receipes", "Shopping"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function NavBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
@@ -53,13 +47,6 @@ function NavBar() {
       <MenuItem onClick={handleMenuClose}>Sign Out</MenuItem>
     </Menu>
   );
-
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleUserClick = (event: React.MouseEvent<HTMLElement>) => {
-    console.log("Click");
-  };
 
   const handleMenuClick = (route: string) => {
     console.log(route);

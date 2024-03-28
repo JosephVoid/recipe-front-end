@@ -10,8 +10,8 @@ export default function Dashboard() {
   return (
     <div className="w-full">
       <NavBar />
-      <Route path="/" component={Recipes} />
       <Switch>
+        <Route path="/" component={Recipes} />
         <Route path="/recipes" nest>
           <Route path="/" component={Recipes} />
           <Route path="/create-recipes" component={CreateRecipes} />
