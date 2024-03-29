@@ -3,6 +3,10 @@ import { Typography, TextField, IconButton } from "@mui/material";
 import { Add, RemoveCircle } from "@mui/icons-material";
 import React from "react";
 import { Recipe } from "../types";
+import { Cloudinary } from "@cloudinary/url-gen";
+import { blobToBase64 } from "../helpers";
+import { createRecipes } from "../api";
+import { useLocation } from "wouter";
 
 export default function CreateRecipes() {
   const [recipeName, setRecipeName] = React.useState("");
@@ -13,17 +17,47 @@ export default function CreateRecipes() {
   const [ingName, setIngrName] = React.useState("");
   const [ingrAmount, setIngrAmount] = React.useState(0);
   const [ingrUnit, setIngrUnit] = React.useState("");
+  const [location, setLocation] = useLocation();
 
-  function handleSubmit() {
+  async function uploadImage(): Promise<string> {
+    const data = new FormData();
+    data.append("file", recipeImg!);
+    data.append(
+      "upload_preset",
+      process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET ?? ""
+    );
+    data.append(
+      "cloud_name",
+      process.env.REACT_APP_CLOUDINARY_CLOUD_NAME ?? ""
+    );
+    data.append("folder", "Cloudinary-React");
+
+    try {
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: "POST",
+          body: data,
+        }
+      );
+      const res = await response.json();
+      return res.url;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async function handleSubmit() {
+    let imgUrl = await uploadImage();
     const final: Omit<Recipe, "id"> = {
       title: recipeName,
       desc: recipeDesc,
       author: recipeAuthor,
-      img: "wild",
+      img: imgUrl,
       ingr: recipeIngr ?? [],
     };
-    console.log(recipeImg);
-    console.log(final);
+    let result = await createRecipes(final);
+    if (result) setLocation("/");
   }
 
   function handleIngrAddition() {

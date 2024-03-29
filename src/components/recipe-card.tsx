@@ -7,7 +7,13 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Recipe } from "../types";
 
-export default function RecipeCard({ data }: { data: Omit<Recipe, "ingr"> }) {
+export default function RecipeCard({
+  data,
+  onView,
+}: {
+  data: Omit<Recipe, "ingr">;
+  onView: () => void;
+}) {
   return (
     <Card sx={{ maxWidth: 245, marginBottom: "2em" }}>
       <CardMedia sx={{ height: 140 }} image={data.img} />
@@ -22,7 +28,7 @@ export default function RecipeCard({ data }: { data: Omit<Recipe, "ingr"> }) {
           By {data.author}
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions onClick={onView}>
         <Button size="small">View</Button>
       </CardActions>
     </Card>
