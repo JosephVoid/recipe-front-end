@@ -2,10 +2,11 @@ import { Button, Typography } from "@mui/material";
 import RecipeCard from "../components/recipe-card";
 import { Recipe } from "../types";
 import DisplayRecipe from "../components/display-recipe";
-import { useLocation } from "wouter";
+import { Link } from "wouter";
+import { useBrowserLocation } from "wouter/use-browser-location";
 
 export default function Recipes() {
-  const [location, setLocation] = useLocation();
+  const [bLocation, setBLocation] = useBrowserLocation();
 
   const dummy: Recipe[] = [
     {
@@ -15,8 +16,8 @@ export default function Recipes() {
       author: "Yoseph",
       img: "https://picsum.photos/id/237/200/300",
       ingr: [
-        { name: "salad", quantity: 500, unit: "grams" },
-        { name: "vingar", quantity: 500, unit: "ml" },
+        { id: "ing1", name: "salad", quantity: 500, unit: "grams" },
+        { id: "ing2", name: "vingar", quantity: 500, unit: "ml" },
       ],
     },
     {
@@ -26,24 +27,23 @@ export default function Recipes() {
       author: "Dean",
       img: "https://picsum.photos/id/267/200/300",
       ingr: [
-        { name: "salad", quantity: 500, unit: "grams" },
-        { name: "vingar", quantity: 500, unit: "ml" },
-        { name: "Flour", quantity: 1, unit: "kg" },
+        { id: "ing1", name: "salad", quantity: 500, unit: "grams" },
+        { id: "ing2", name: "vingar", quantity: 500, unit: "ml" },
+        { id: "ing3", name: "Flour", quantity: 1, unit: "kg" },
       ],
     },
   ];
-
+  console.log(`/${bLocation === "/recipes" ? "" : "recipes/"}create-recipes`);
   return (
     <div className="p-10 flex">
       <div className="flex flex-col w-1/3">
-        <Button
-          variant="contained"
-          size="small"
-          className="w-2/3 !mb-4"
-          onClick={() => setLocation(`/create-recipes`)}
+        <Link
+          href={`/${bLocation === "/recipes" ? "" : "recipes/"}create-recipes`}
         >
-          New Recipe
-        </Button>
+          <Button variant="contained" size="small" className="w-2/3 !mb-4">
+            New Recipe
+          </Button>
+        </Link>
         <Typography variant="h5" gutterBottom>
           Recipe List
         </Typography>

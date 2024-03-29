@@ -1,8 +1,14 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { useState } from "react";
 
 export default function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  function handleSubmit() {}
+
   return (
     <div className="p-10 flex">
       <div className="w-1/2 flex flex-col">
@@ -15,6 +21,8 @@ export default function SignIn() {
             id="user-email"
             variant="standard"
             sx={{ marginBottom: "1rem" }}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             label="Password"
@@ -22,8 +30,10 @@ export default function SignIn() {
             type="password"
             variant="standard"
             sx={{ marginBottom: "1rem" }}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <Button variant="contained" size="small">
+          <Button variant="contained" size="small" onClick={handleSubmit}>
             Log In
           </Button>
         </form>

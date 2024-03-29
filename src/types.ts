@@ -5,6 +5,7 @@ export interface Recipe {
   img: string;
   author: string;
   ingr: {
+    id: string;
     name: string;
     quantity: number;
     unit: string;
