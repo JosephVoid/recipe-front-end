@@ -37,20 +37,29 @@ export async function deleteRecipes(id: string): Promise<any> {
   return result.data;
 }
 
-export async function signIn(email: string, password: string): Promise<any> {
+export async function signOut(): Promise<boolean> {
+  let result = await axios.post(`/sign-out`);
+  if (result.status !== 200) return false;
+  return true;
+}
+
+export async function signIn(
+  email: string,
+  password: string
+): Promise<boolean> {
   let result = await axios.post(`/sign-in`, {
     email: email,
     password: password,
   });
   if (result.status !== 200) return false;
-  return result.data;
+  return true;
 }
 
 export async function signUp(
   name: string,
   email: string,
   password: string
-): Promise<any> {
+): Promise<boolean> {
   let result = await axios.post(`/sign-up`, {
     name: name,
     email: email,

@@ -2,12 +2,19 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
+import { signIn } from "../api";
+import { useLocation } from "wouter";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [location, setLocation] = useLocation();
 
-  function handleSubmit() {}
+  function handleSubmit() {
+    signIn(email, password).then((result) => {
+      if (result) setLocation("/", { state: "Signed In" });
+    });
+  }
 
   return (
     <div className="p-10 flex">

@@ -11,9 +11,14 @@ import Button from "@mui/material/Button";
 import logo from "../assets/recipe.png";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import Cookies from "js-cookie";
+import { signOut } from "../api";
+import { AssignmentInd } from "@mui/icons-material";
+import Badge from "@mui/material/Badge";
+import { useSelector } from "react-redux";
+import { RootState } from "../store/store";
 
 const pages = ["Recipes", "Shopping"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function NavBar() {
   const handleMenuClose = () => {
@@ -23,11 +28,19 @@ function NavBar() {
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const handleSignOut = () => {
+    handleMenuClose();
+    signOut().then((result) => {
+      if (result) setLocation("/", { state: "Signed Out" });
+    });
+  };
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [location, setLocation] = useLocation();
   const isMenuOpen = Boolean(anchorEl);
   const menuId = "primary-search-account-menu";
+  const items = useSelector((state: RootState) => state.shopping);
+
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
@@ -44,9 +57,16 @@ function NavBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={() => setLocation(`/signin`)}>Log In</MenuItem>
-      <MenuItem onClick={() => setLocation(`/signup`)}>Sign Up</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Sign Out</MenuItem>
+      {Cookies.get("user_id") === undefined && (
+        <>
+          <MenuItem onClick={() => setLocation(`/signin`)}>Log In</MenuItem>
+          <MenuItem onClick={() => setLocation(`/signup`)}>Sign Up</MenuItem>
+        </>
+      )}
+
+      {Cookies.get("user_id") && (
+        <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
+      )}
     </Menu>
   );
 
@@ -63,20 +83,31 @@ function NavBar() {
               <img src={logo} alt="" />
             </MenuItem>
 
-            {pages.map((page) => (
-              <MenuItem
-                key={page}
-                onClick={() => handleMenuClick(page.toLowerCase())}
-              >
+            <MenuItem
+              key={"Recipes"}
+              onClick={() => handleMenuClick("Recipes".toLowerCase())}
+            >
+              <Typography textAlign="center" style={{ color: "black" }}>
+                {"Recipes"}
+              </Typography>
+            </MenuItem>
+            <MenuItem
+              key={"Shopping"}
+              onClick={() => handleMenuClick("Shopping".toLowerCase())}
+            >
+              <Badge badgeContent={items.length} color="primary">
                 <Typography textAlign="center" style={{ color: "black" }}>
-                  {page}
+                  {"Shopping"}
                 </Typography>
-              </MenuItem>
-            ))}
+              </Badge>
+            </MenuItem>
           </div>
           <Box sx={{ flexGrow: 0 }}>
             <IconButton onClick={handleProfileMenuOpen}>
-              <PersonIcon fontSize="large"></PersonIcon>
+              {Cookies.get("user_id") && <AssignmentInd fontSize="large" />}
+              {Cookies.get("user_id") === undefined && (
+                <PersonIcon fontSize="large"></PersonIcon>
+              )}
             </IconButton>
           </Box>
         </Toolbar>

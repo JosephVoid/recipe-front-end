@@ -14,31 +14,34 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { Recipe } from "../types";
+import { useSelector, useDispatch } from "react-redux";
+import { addItem, removeItem } from "../store/shoppingSlice";
+import type { RootState } from "../store/store";
 
 export default function Shopping() {
   const [shopItems, setShopItems] = useState<Recipe["ingr"]>([]);
   const [ingName, setIngrName] = useState("");
   const [ingrAmount, setIngrAmount] = useState(0);
   const [ingrUnit, setIngrUnit] = useState("");
+  const items = useSelector((state: RootState) => state.shopping);
+  const dispatch = useDispatch();
 
-  function handleIngrAddition() {
-    setShopItems([
-      ...shopItems,
-      {
+  function addIngrRedux() {
+    dispatch(
+      addItem({
         id: "ingr" + Math.random(),
         name: ingName,
         quantity: ingrAmount,
         unit: ingrUnit,
-      },
-    ]);
-
+      })
+    );
     setIngrName("");
     setIngrAmount(0);
     setIngrUnit("");
   }
 
-  function handleIngrRemoval(id: string) {
-    setShopItems((shopItems) => shopItems.filter((ingr) => ingr.id !== id));
+  function removeIngrRedux(id: string) {
+    dispatch(removeItem(id));
   }
 
   return (
@@ -48,14 +51,14 @@ export default function Shopping() {
           Shopping List
         </Typography>
         <List dense className="!pr-10">
-          {shopItems.map((item) => (
+          {items.map((item) => (
             <ListItem
               key={item.id}
               secondaryAction={
                 <IconButton
                   edge="end"
                   aria-label="delete"
-                  onClick={() => handleIngrRemoval(item.id)}
+                  onClick={() => removeIngrRedux(item.id)}
                 >
                   <Delete />
                 </IconButton>
@@ -107,7 +110,7 @@ export default function Shopping() {
               onChange={(e) => setIngrUnit(e.target.value)}
             />
           </div>
-          <Button variant="contained" size="small" onClick={handleIngrAddition}>
+          <Button variant="contained" size="small" onClick={addIngrRedux}>
             Add to Shopping List
           </Button>
         </form>

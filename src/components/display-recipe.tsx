@@ -1,9 +1,33 @@
 import Typography from "@mui/material/Typography";
 import { Recipe } from "../types";
-import { Button, CardMedia } from "@mui/material";
-import { MenuBook, Restaurant } from "@mui/icons-material";
+import { Button } from "@mui/material";
+import { MenuBook } from "@mui/icons-material";
+import { useDispatch } from "react-redux";
+import { addItem } from "../store/shoppingSlice";
 
-export default function DisplayRecipe({ data }: { data: Recipe }) {
+export default function DisplayRecipe({
+  data,
+  onAdd,
+}: {
+  data: Recipe;
+  onAdd: () => void;
+}) {
+  const dispatch = useDispatch();
+
+  function addToShoppingList() {
+    data.ingr.forEach((ingredient) => {
+      dispatch(
+        addItem({
+          id: ingredient.id,
+          name: ingredient.name,
+          quantity: ingredient.quantity,
+          unit: ingredient.unit,
+        })
+      );
+    });
+    onAdd();
+  }
+
   return (
     <div className="flex flex-col">
       <Typography
@@ -32,7 +56,7 @@ export default function DisplayRecipe({ data }: { data: Recipe }) {
           <MenuBook className="mr-2" />
           Ingredients
         </div>
-        <Button variant="contained" size="small">
+        <Button variant="contained" size="small" onClick={addToShoppingList}>
           Add to Shopping List
         </Button>
       </Typography>

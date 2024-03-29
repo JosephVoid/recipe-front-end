@@ -57,7 +57,7 @@ export default function CreateRecipes() {
       ingr: recipeIngr ?? [],
     };
     let result = await createRecipes(final);
-    if (result) setLocation("/");
+    if (result) setLocation("/", { state: "Recipe Created" });
   }
 
   function handleIngrAddition() {
