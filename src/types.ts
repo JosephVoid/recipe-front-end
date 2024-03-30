@@ -1,9 +1,10 @@
 export interface Recipe {
-  id: string;
+  _id: string;
   title: string;
   desc: string;
   img: string;
   author: string;
+  author_id: string;
   ingr: {
     id: string;
     name: string;

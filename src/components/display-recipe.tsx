@@ -1,18 +1,24 @@
 import Typography from "@mui/material/Typography";
 import { Recipe } from "../types";
-import { Button } from "@mui/material";
-import { MenuBook } from "@mui/icons-material";
+import { Button, IconButton } from "@mui/material";
+import { Delete, MenuBook } from "@mui/icons-material";
 import { useDispatch } from "react-redux";
 import { addItem } from "../store/shoppingSlice";
+import Cookies from "js-cookie";
+import { deleteRecipes } from "../api";
+import { useLocation } from "wouter";
 
 export default function DisplayRecipe({
   data,
   onAdd,
+  onDelete,
 }: {
   data: Recipe;
   onAdd: () => void;
+  onDelete: () => void;
 }) {
   const dispatch = useDispatch();
+  const [location, setLocation] = useLocation();
 
   function addToShoppingList() {
     data.ingr.forEach((ingredient) => {
@@ -28,6 +34,12 @@ export default function DisplayRecipe({
     onAdd();
   }
 
+  function handleDelete(id: string) {
+    deleteRecipes(id).then((result) => {
+      if (result) onDelete();
+    });
+  }
+
   return (
     <div className="flex flex-col">
       <Typography
@@ -37,6 +49,15 @@ export default function DisplayRecipe({
         textAlign={"center"}
       >
         {data.title}
+        {Cookies.get("user_id") === data.author_id && (
+          <IconButton
+            edge="end"
+            aria-label="delete"
+            onClick={() => handleDelete(data._id)}
+          >
+            <Delete />
+          </IconButton>
+        )}
       </Typography>
       <img
         src={data.img}

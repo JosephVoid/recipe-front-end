@@ -7,6 +7,7 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import { blobToBase64 } from "../helpers";
 import { createRecipes } from "../api";
 import { useLocation } from "wouter";
+import Cookies from "js-cookie";
 
 export default function CreateRecipes() {
   const [recipeName, setRecipeName] = React.useState("");
@@ -49,13 +50,15 @@ export default function CreateRecipes() {
 
   async function handleSubmit() {
     let imgUrl = await uploadImage();
-    const final: Omit<Recipe, "id"> = {
+    const final: Omit<Recipe, "_id"> = {
       title: recipeName,
       desc: recipeDesc,
       author: recipeAuthor,
+      author_id: Cookies.get("user_id") ?? "",
       img: imgUrl,
       ingr: recipeIngr ?? [],
     };
+    console.log(final);
     let result = await createRecipes(final);
     if (result) setLocation("/", { state: "Recipe Created" });
   }

@@ -64,6 +64,9 @@ export default function Recipes() {
               setSnkText("Added To Shopping");
               setTimeout(() => setSnkText(""), 3000);
             }}
+            onDelete={() => {
+              window.location.reload();
+            }}
           />
         )}
       </div>

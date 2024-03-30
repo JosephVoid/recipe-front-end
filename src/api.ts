@@ -18,7 +18,7 @@ export async function getRecipes(): Promise<Recipe[] | null> {
 }
 
 export async function createRecipes(
-  recipe: Omit<Recipe, "id">
+  recipe: Omit<Recipe, "_id">
 ): Promise<boolean> {
   let result = await axios.post("/create-recipe", recipe);
   if (result.status !== 200) return false;
@@ -31,10 +31,10 @@ export async function editRecipes(recipe: Recipe, id: string): Promise<any> {
   return result.data;
 }
 
-export async function deleteRecipes(id: string): Promise<any> {
+export async function deleteRecipes(id: string): Promise<boolean> {
   let result = await axios.delete(`/delete-recipe/${id}`);
   if (result.status !== 200) return false;
-  return result.data;
+  return true;
 }
 
 export async function signOut(): Promise<boolean> {
